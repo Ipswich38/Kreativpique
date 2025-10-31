@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AppProvider } from "./contexts/AppContext";
+import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import ModernSidebar from "./components/ModernSidebar";
 import TopBar from "./components/TopBar";
 import MobileHeader from "./components/MobileHeader";
@@ -14,26 +15,31 @@ import DarkMultimailPage from "./components/DarkMultimailPage";
 import DemoPage from "./components/DemoPage";
 import LoginPage from "./components/LoginPage";
 import SettingsPage from "./components/SettingsPage";
+import ROITrackerPage from "./components/ROITrackerPage";
+import ContentLabPage from "./components/ContentLabPage";
+import CompetitorsPage from "./components/CompetitorsPage";
+import RecommendationsPage from "./components/RecommendationsPage";
+import ReportsPage from "./components/ReportsPage";
 
-export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+function AppContent() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [userEmail, setUserEmail] = useState("");
+  const { user, loading, initialized, signOut } = useAuthContext();
 
-  const handleLogin = (email: string, password: string) => {
-    // In production, this would validate against your backend
-    setUserEmail(email);
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUserEmail("");
+  const handleLogout = async () => {
+    await signOut();
     setActiveTab("dashboard");
   };
 
-  if (!isAuthenticated) {
-    return <LoginPage onLogin={handleLogin} />;
+  if (!initialized || loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#0f1419]">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-500"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginPage />;
   }
 
   const renderContent = () => {
@@ -56,6 +62,16 @@ export default function App() {
         return <DemoPage />;
       case "settings":
         return <SettingsPage />;
+      case "roi-tracker":
+        return <ROITrackerPage />;
+      case "content-lab":
+        return <ContentLabPage />;
+      case "competitors":
+        return <CompetitorsPage />;
+      case "recommendations":
+        return <RecommendationsPage />;
+      case "reports":
+        return <ReportsPage />;
       default:
         return <ProductionOverview />;
     }
@@ -73,13 +89,13 @@ export default function App() {
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Desktop TopBar */}
           <div className="hidden md:block">
-            <TopBar userEmail={userEmail} onLogout={handleLogout} />
+            <TopBar userEmail={user.email || ''} onLogout={handleLogout} />
           </div>
 
           {/* Mobile Header */}
           <div className="md:hidden">
-            <MobileHeader 
-              userEmail={userEmail} 
+            <MobileHeader
+              userEmail={user.email || ''}
               onLogout={handleLogout}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
@@ -96,5 +112,13 @@ export default function App() {
         </main>
       </div>
     </AppProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
