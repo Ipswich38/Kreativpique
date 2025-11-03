@@ -44,8 +44,8 @@ class AnalyticsService {
   initialize() {
     if (this.initialized) return
 
-    const posthogKey = import.meta.env.VITE_POSTHOG_KEY
-    const posthogHost = import.meta.env.VITE_POSTHOG_HOST
+    const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
+    const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
 
     if (posthogKey) {
       posthog.init(posthogKey, {

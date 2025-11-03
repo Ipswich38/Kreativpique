@@ -29,8 +29,8 @@ class MonitoringService {
   initialize() {
     if (this.initialized) return
 
-    const sentryDsn = import.meta.env.VITE_SENTRY_DSN
-    const environment = import.meta.env.VITE_ENVIRONMENT || 'development'
+    const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN
+    const environment = process.env.NEXT_PUBLIC_ENVIRONMENT || 'development'
 
     if (sentryDsn) {
       Sentry.init({

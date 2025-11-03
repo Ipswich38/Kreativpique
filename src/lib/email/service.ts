@@ -7,7 +7,7 @@ export class EmailService {
   private resend: Resend
 
   constructor() {
-    const apiKey = import.meta.env.VITE_RESEND_API_KEY || process.env.RESEND_API_KEY
+    const apiKey = process.env.RESEND_API_KEY
     if (!apiKey) {
       throw new Error('Resend API key not found')
     }
@@ -131,7 +131,7 @@ export class EmailService {
             </div>
 
             <div style="text-align: center; margin: 40px 0;">
-              <a href="${process.env.VITE_APP_URL || 'https://app.kreativpique.com'}/dashboard"
+              <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://app.kreativpique.com'}/dashboard"
                  style="background: #10b981; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
                 Get Started
               </a>
