@@ -195,7 +195,7 @@ export default function ReportsPage() {
           roi: 'Very High'
         },
         {
-          priority: 'critical',
+          priority: 'high',
           category: 'Ads',
           title: 'Start Campaign for "private jet charter Dubai"',
           impact: '2-4 new leads/month',

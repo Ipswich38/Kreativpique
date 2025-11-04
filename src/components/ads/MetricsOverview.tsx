@@ -28,7 +28,7 @@ export function MetricsOverview({ campaigns, metrics, timeframe, onTimeframeChan
     return `${num.toFixed(2)}%`
   }
 
-  const getMetricValue = (metric: keyof AdMetrics, suffix: string) => {
+  const getMetricValue = (metric: string, suffix: string) => {
     return Object.values(metrics).reduce((total, campaignMetrics) => {
       const key = `${metric}_${suffix}` as keyof AdMetrics
       return total + (campaignMetrics[key] as number || 0)

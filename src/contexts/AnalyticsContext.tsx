@@ -96,7 +96,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       // Identify user in analytics
       analyticsService.identify({
         id: user.id,
-        email: user.email,
+        email: user.email || '',
         agency_id: user.agency?.id || '',
         role: user.role || 'user',
         subscription_tier: user.agency?.subscription_tier || 'free'
@@ -105,7 +105,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       // Set user in monitoring
       monitoringService.setUser({
         id: user.id,
-        email: user.email,
+        email: user.email || '',
         agency_id: user.agency?.id || '',
         role: user.role || 'user',
         subscription_tier: user.agency?.subscription_tier || 'free'
@@ -116,8 +116,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
         analyticsService.setGroup('agency', user.agency.id, {
           name: user.agency.name,
           subscription_tier: user.agency.subscription_tier,
-          created_at: user.agency.created_at,
-          industry: user.agency.industry
+          created_at: user.agency.created_at
         })
       }
 
